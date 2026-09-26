@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>McPherson Tiling | Free Quote &amp; Contact</title>
+  <meta name="description" content="Request a free tiling quote. Tell us about your bathroom, kitchen, pool or outdoor job and attach a few photos. We'll get back to you fast." />
+  <meta name="theme-color" content="#121212" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='2' y='2' width='13' height='13' rx='1' fill='%23efe9df'/%3E%3Crect x='17' y='2' width='13' height='13' rx='1' fill='%23efe9df'/%3E%3Crect x='2' y='17' width='13' height='13' rx='1' fill='%23efe9df'/%3E%3Crect x='17' y='17' width='13' height='13' rx='1' fill='%23c9713f'/%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,500..900&family=Inter:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+  <header class="nav">
+    <div class="wrap">
+      <a class="brand" href="index.html" aria-label="Home">
+        <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true"><rect x="2" y="2" width="13" height="13" rx="1" fill="#efe9df"/><rect x="17" y="2" width="13" height="13" rx="1" fill="#efe9df"/><rect x="2" y="17" width="13" height="13" rx="1" fill="#efe9df"/><rect x="17" y="17" width="13" height="13" rx="1" fill="#c9713f"/></svg>
+        <span class="brand-name" data-site="name">McPherson Tiling</span>
+      </a>
+      <button class="nav-toggle" aria-label="Menu" aria-expanded="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+      <nav class="nav-links">
+        <a href="index.html#services">Services</a>
+        <a href="index.html#patterns">Patterns</a>
+        <a href="index.html#process">How we work</a>
+        <a data-tel href="#"><span data-site="phone">0400 000 000</span></a>
+        <a class="btn" href="contact.html">Free quote</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="page-hero">
+      <canvas data-pattern="hex" data-seed="14" aria-hidden="true"></canvas>
+      <div class="wrap">
+        <p class="eyebrow reveal">Contact us</p>
+        <h1 class="reveal" data-delay="1">Let's get your<br/><em class="serif">free quote</em> sorted</h1>
+        <p class="lead reveal" data-delay="2">Tell us a little about the job and attach a few photos of the space. Photos help us give you an accurate price faster. Prefer to talk? Call or email any time.</p>
+      </div>
+    </section>
+
+    <section class="wrap contact-grid">
+      <!-- ================= QUOTE FORM ================= -->
+      <div class="form reveal">
+        <form id="quote-form" name="quote" method="POST" enctype="multipart/form-data" data-netlify="true" netlify-honeypot="company" novalidate>
+          <input type="hidden" name="form-name" value="quote" />
+          <p class="hp"><label>Leave this empty <input name="company" tabindex="-1" autocomplete="off" /></label></p>
+
+          <div class="form-row two">
+            <div class="field">
+              <label for="f-name">Your name</label>
+              <input id="f-name" name="name" autocomplete="name" required />
+            </div>
+            <div class="field">
+              <label for="f-phone">Phone</label>
+              <input id="f-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" required />
+            </div>
+          </div>
+
+          <div class="form-row two">
+            <div class="field">
+              <label for="f-email">Email</label>
+              <input id="f-email" name="email" type="email" autocomplete="email" required />
+            </div>
+            <div class="field">
+              <label for="f-suburb">Suburb</label>
+              <input id="f-suburb" name="suburb" autocomplete="address-level2" required />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="field">
+              <span class="label">What needs tiling? <span class="opt">(pick any)</span></span>
+              <div class="chips">
+                <label><input type="checkbox" name="job" value="Bathroom / ensuite" /><span>Bathroom / ensuite</span></label>
+                <label><input type="checkbox" name="job" value="Kitchen / splashback" /><span>Kitchen / splashback</span></label>
+                <label><input type="checkbox" name="job" value="Floors" /><span>Floors</span></label>
+                <label><input type="checkbox" name="job" value="Pool / spa" /><span>Pool / spa</span></label>
+                <label><input type="checkbox" name="job" value="Outdoor / crazy pave" /><span>Outdoor / crazy pave</span></label>
+                <label><input type="checkbox" name="job" value="Laundry" /><span>Laundry</span></label>
+                <label><input type="checkbox" name="job" value="Feature wall" /><span>Feature wall</span></label>
+                <label><input type="checkbox" name="job" value="Repairs / regrout" /><span>Repairs / regrout</span></label>
+                <label><input type="checkbox" name="job" value="Something else" /><span>Something else</span></label>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row two">
+            <div class="field">
+              <label for="f-size">Approx. area <span class="opt">(optional)</span></label>
+              <input id="f-size" name="area" placeholder="e.g. 12 m² or 3m × 4m" />
+            </div>
+            <div class="field">
+              <label for="f-when">When are you hoping to start?</label>
+              <select id="f-when" name="timeframe">
+                <option>As soon as possible</option>
+                <option>Within a month</option>
+                <option>1–3 months</option>
+                <option>3+ months</option>
+                <option>Just getting prices</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="field">
+              <label for="f-msg">Tell us about the job</label>
+              <textarea id="f-msg" name="message" placeholder="What's the space, what tiles are you thinking of (or do you need help choosing), is there old tiling to remove, anything else we should know…" required></textarea>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="field">
+              <span class="label">Photos of the space <span class="opt">(optional, up to 6)</span></span>
+              <div class="drop" id="drop">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="1.5"/><circle cx="8.5" cy="10" r="1.6"/><path d="M21 16l-5-5-8 8"/></svg>
+                <strong>Drop photos here or tap to add</strong>
+                <small>JPG, PNG or HEIC. We'll shrink big photos automatically.</small>
+                <input id="f-photos" type="file" accept="image/*" multiple aria-label="Add photos" />
+              </div>
+              <div class="thumbs" id="thumbs"></div>
+              <p class="file-note" id="file-note" aria-live="polite"></p>
+            </div>
+          </div>
+
+          <!-- Hidden fields so form services (e.g. Netlify) register the photo slots -->
+          <div hidden>
+            <input type="file" name="photo1" /><input type="file" name="photo2" /><input type="file" name="photo3" />
+            <input type="file" name="photo4" /><input type="file" name="photo5" /><input type="file" name="photo6" />
+          </div>
+
+          <div class="form-foot">
+            <small>We only use your details to reply to your enquiry. No spam, ever.</small>
+            <button class="btn" type="submit" id="submit">
+              <span class="spinner" aria-hidden="true"></span>
+              <span class="label-text">Send my quote request</span>
+            </button>
+          </div>
+          <div class="form-status" id="status" role="status"></div>
+        </form>
+
+        <div class="success" id="success" tabindex="-1">
+          <div class="tick" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+          <h3>Request received!</h3>
+          <p>Thanks, we've got your details and photos. We'll be in touch shortly to arrange your free quote.</p>
+          <a class="btn ghost" href="index.html" style="margin-top:12px">Back to home</a>
+        </div>
+      </div>
+
+      <!-- ================= SIDEBAR ================= -->
+      <aside>
+        <div class="aside-card reveal" data-delay="1">
+          <h3>Rather talk?</h3>
+          <a class="contact-line" data-tel href="#">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg>
+            <div><small>Call or text</small><span data-site="phone">0400 000 000</span></div>
+          </a>
+          <a class="contact-line" data-mail href="#">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="1.5"/><path d="M3 7l9 6 9-6"/></svg>
+            <div><small>Email</small><span data-site="email">hello@example.com.au</span></div>
+          </a>
+          <div class="contact-line">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 21s7-6.2 7-12a7 7 0 0 0-14 0c0 5.8 7 12 7 12z"/><circle cx="12" cy="9" r="2.5"/></svg>
+            <div><small>Service area</small><span data-site="area">your area &amp; surrounds</span></div>
+          </div>
+        </div>
+        <div class="aside-card reveal" data-delay="2">
+          <h3>Photo tips</h3>
+          <ul class="tips">
+            <li>One wide shot of the whole room or area</li>
+            <li>Close-ups of any cracks, leaks or damage</li>
+            <li>Any tiles you've already picked out</li>
+            <li>Inspiration pics of looks you love</li>
+          </ul>
+        </div>
+      </aside>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <div class="foot-bottom" style="margin-top:0;border-top:0;padding-top:0">
+        <span>© <span data-year></span> <span data-site="name">McPherson Tiling</span>. All rights reserved.</span>
+        <span data-abn></span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/config.js"></script>
+  <script src="js/patterns.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/contact.js"></script>
+</body>
+</html>
