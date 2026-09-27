@@ -4,7 +4,8 @@
    width = aspect ratio, height = 1) plus a CSS background.
    ========================================================= */
 (function () {
-  const G = 0.0038; // half the grout joint, in floor units
+  const G = 0.0038;      // half the grout joint, in floor units
+  const RADIUS = 0.06;   // rounded corners of the whole tiled area
 
   const pick = (arr, r) => arr[Math.floor(r() * arr.length)];
   function shade(hex, amt) {
@@ -37,14 +38,15 @@
     crazypave: {
       label: "Crazy pave",
       grout: "#ebe7e0",
+      curvy: true,
       tiles(W, mobile, r) {
         // Natural stones: Voronoi cells around jittered seed points (5–7 sided, like real crazy pave)
-        const cols = mobile ? 4 : 7, rows = mobile ? 6 : 5;
+        const cols = mobile ? 5 : 9, rows = mobile ? 7 : 6;
         const cw = W / cols, ch = 1 / rows, seeds = [];
         for (let j = 0; j < rows; j++)
           for (let i = 0; i < cols; i++) {
             seeds.push([(i + 0.5 + (r() - 0.5) * 0.8) * cw, (j + 0.5 + (r() - 0.5) * 0.8) * ch]);
-            if (r() < 0.25) seeds.push([(i + r()) * cw, (j + r()) * ch]); // the odd smaller stone
+            if (r() < 0.3) seeds.push([(i + r()) * cw, (j + r()) * ch]); // the odd smaller stone
           }
         return seeds.map((si) => {
           let poly = rect(-0.1, -0.1, W + 0.2, 1.2);
@@ -145,28 +147,35 @@
   }
 
   /* ---------- Geometry helpers ---------- */
-  function clipToFloor(poly, W) {
-    const edges = [
-      (p) => p[0] >= 0, (p) => p[0] <= W, (p) => p[1] >= 0, (p) => p[1] <= 1,
-    ];
-    const cut = [
-      (a, b) => lerpAt(a, b, (0 - a[0]) / (b[0] - a[0])),
-      (a, b) => lerpAt(a, b, (W - a[0]) / (b[0] - a[0])),
-      (a, b) => lerpAt(a, b, (0 - a[1]) / (b[1] - a[1])),
-      (a, b) => lerpAt(a, b, (1 - a[1]) / (b[1] - a[1])),
-    ];
-    let out = poly;
-    for (let e = 0; e < 4 && out.length; e++) {
-      const inp = out; out = [];
-      for (let i = 0; i < inp.length; i++) {
-        const cur = inp[i], prev = inp[(i + inp.length - 1) % inp.length];
-        const ci = edges[e](cur), pi = edges[e](prev);
-        if (ci) { if (!pi) out.push(cut[e](prev, cur)); out.push(cur); }
-        else if (pi) out.push(cut[e](prev, cur));
+  // The tiled area: a rectangle with rounded corners (as a convex polygon)
+  function floorShape(W) {
+    const R = RADIUS, pts = [], seg = 8;
+    const corners = [[W - R, R, -90], [W - R, 1 - R, 0], [R, 1 - R, 90], [R, R, 180]];
+    for (const [cx, cy, a0] of corners)
+      for (let k = 0; k <= seg; k++) {
+        const a = ((a0 + (90 * k) / seg) * Math.PI) / 180;
+        pts.push([cx + R * Math.cos(a), cy + R * Math.sin(a)]);
       }
+    return pts;
+  }
+  function insideFloor(q, W) {
+    const R = RADIUS, [x, y] = q;
+    if (x < 0 || x > W || y < 0 || y > 1) return false;
+    const cx = x < R ? R : x > W - R ? W - R : x, cy = y < R ? R : y > 1 - R ? 1 - R : y;
+    return Math.hypot(x - cx, y - cy) <= R;
+  }
+  function clipConvex(poly, shape) {
+    const c = shape.reduce((m, q) => [m[0] + q[0] / shape.length, m[1] + q[1] / shape.length], [0, 0]);
+    let out = poly;
+    for (let i = 0; i < shape.length && out.length >= 3; i++) {
+      const a = shape[i], b = shape[(i + 1) % shape.length];
+      const cross = (q) => (b[0] - a[0]) * (q[1] - a[1]) - (b[1] - a[1]) * (q[0] - a[0]);
+      const s = Math.sign(cross(c)) || 1;
+      out = clipHalf(out, (q) => -s * cross(q));
     }
     return out;
   }
+
   // Keep the part of a convex polygon where f(point) <= 0
   function clipHalf(poly, f) {
     const out = [];
@@ -196,7 +205,7 @@
       const dx = b[0] - a[0], dy = b[1] - a[1], len = Math.hypot(dx, dy);
       if (len < 1e-9) continue;
       const nx = (-dy / len) * sign, ny = (dx / len) * sign; // inward normal
-      lines.push({ px: a[0] + nx * G, py: a[1] + ny * G, dx, dy });
+      lines.push({ px: a[0] + nx * G, py: a[1] + ny * G, dx, dy, a, b, nx, ny });
     }
     const out = [];
     for (let i = 0; i < lines.length; i++) {
@@ -207,7 +216,29 @@
       out.push([L1.px + L1.dx * t, L1.py + L1.dy * t]);
     }
     const c = p.reduce((m, q) => [m[0] + q[0] / n, m[1] + q[1] / n], [0, 0]);
-    return { poly: out, c };
+    return { poly: out, c, edges: lines };
+  }
+
+  // Bend each edge into a gentle curve. Shared edges bend the same way for both stones
+  // (the bend is decided by the edge's position), so the joint between them stays even.
+  function curveEdges(poly, edges, W) {
+    const out = [], steps = 7;
+    for (let i = 0; i < poly.length; i++) {
+      const p0 = poly[i], p1 = poly[(i + 1) % poly.length], e = edges[i];
+      const len = Math.hypot(e.dx, e.dy);
+      const mx = (e.a[0] + e.b[0]) / 2, my = (e.a[1] + e.b[1]) / 2;
+      const onBorder = !insideFloor([mx - e.nx * 1e-3, my - e.ny * 1e-3], W);
+      let nx = -e.dy / len, ny = e.dx / len;
+      if (nx < -1e-9 || (Math.abs(nx) < 1e-9 && ny < 0)) { nx = -nx; ny = -ny; }
+      const h = Math.sin(Math.round(mx * 1e4) * 12.9898 + Math.round(my * 1e4) * 78.233) * 43758.5453;
+      const bend = onBorder ? 0 : ((h - Math.floor(h)) - 0.5) * 0.28 * len;
+      const cx = (p0[0] + p1[0]) / 2 + nx * bend, cy = (p0[1] + p1[1]) / 2 + ny * bend;
+      for (let k = 0; k < steps; k++) {
+        const t = k / steps, u = 1 - t;
+        out.push([u * u * p0[0] + 2 * u * t * cx + t * t * p1[0], u * u * p0[1] + 2 * u * t * cy + t * t * p1[1]]);
+      }
+    }
+    return out;
   }
 
   /* ---------- Public ---------- */
@@ -228,12 +259,14 @@
   // Returns [{ box: {x,y,w,h} as % of the floor, clip: CSS polygon or "", bg, cx, cy }]
   function build(name, W, mobile, r) {
     const sc = SCENES[name];
-    const tiles = [];
+    const tiles = [], shape = floorShape(W);
     for (const raw of sc.tiles(W, mobile, r)) {
-      const clipped = clipToFloor(raw, W);
+      const clipped = clipConvex(raw, shape);
       if (clipped.length < 3 || area(clipped) < 0.002) continue;
-      const { poly, c } = inset(clipped);
-      if (poly.length < 3 || area(poly) < 0.0012 || area(poly) > area(clipped)) continue; // too small once grouted
+      const ins = inset(clipped);
+      const c = ins.c;
+      if (ins.poly.length < 3 || area(ins.poly) < 0.0012 || area(ins.poly) > area(clipped)) continue; // too small once grouted
+      const poly = sc.curvy && ins.edges.length === ins.poly.length ? curveEdges(ins.poly, ins.edges, W) : ins.poly;
       const xs = poly.map((q) => q[0]), ys = poly.map((q) => q[1]);
       const x0 = Math.min(...xs), y0 = Math.min(...ys), bw = Math.max(...xs) - x0, bh = Math.max(...ys) - y0;
       const isRect = poly.length === 4 && poly.every((q) => (q[0] === x0 || Math.abs(q[0] - x0 - bw) < 1e-9) && (q[1] === y0 || Math.abs(q[1] - y0 - bh) < 1e-9));
@@ -244,7 +277,7 @@
         cx: c[0] / W, cy: c[1],
       });
     }
-    return { tiles, grout: sc.grout, label: sc.label };
+    return { tiles, grout: sc.grout, label: sc.label, radius: `${(RADIUS / W) * 100}% / ${RADIUS * 100}%` };
   }
 
   window.TileScenes = { choose, build };

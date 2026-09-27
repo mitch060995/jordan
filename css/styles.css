@@ -210,6 +210,7 @@ em.serif, .serif {
   content: "";
   position: absolute;
   inset: 0;
+  border-radius: var(--floor-radius, 0);
   background: var(--bed-color);
   opacity: var(--bed, 0);
   transform: translateZ(-1px);
@@ -219,6 +220,7 @@ em.serif, .serif {
   content: "";
   position: absolute;
   inset: 0;
+  border-radius: var(--floor-radius, 0);
   background: var(--grout-color);
   opacity: var(--grout, 0);
   transform: translateZ(-0.5px);

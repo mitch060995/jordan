@@ -105,6 +105,7 @@
     const scene = window.TileScenes.build(sceneName, aspect, mobile, rand);
     floor.dataset.scene = sceneName;
     floor.style.setProperty("--grout-color", scene.grout);
+    floor.style.setProperty("--floor-radius", scene.radius);
     floor.innerHTML = "";
     tiles = scene.tiles.map((t) => {
       const el = document.createElement("div");
@@ -157,8 +158,9 @@
 
     // Floor tilt: starts as a perspective floor, rises to face the viewer at the end
     const tilt = easeInOut(range(p, 0.72, 0.92));
-    const rx = lerp(58, 0, tilt), rz = lerp(-18, 0, tilt);
-    const sc = lerp(0.86, 1.15, tilt);
+    const narrow = layoutKey === "m";
+    const rx = lerp(58, 0, tilt), rz = lerp(narrow ? -10 : -18, 0, tilt);
+    const sc = lerp(narrow ? 0.8 : 0.86, 1.15, tilt);
     const ty = lerp(3, 0, tilt);
     floor.style.transform = `translateY(${ty}vh) rotateX(${rx}deg) rotateZ(${rz}deg) scale(${sc})`;
 
