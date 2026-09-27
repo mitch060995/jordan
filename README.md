@@ -3,7 +3,8 @@
 Static site (HTML/CSS/JS, no build step).
 
 ```
-index.html      Home — scroll-driven "lay the floor" hero, services, past projects, CTA
+index.html      Home — scroll-driven "lay the floor" hero, services, CTA
+projects.html   Past projects photo gallery (tap a photo to view full size)
 contact.html    Free-quote form with photo attachments (drag & drop, previews, auto-compression)
 css/styles.css  All styles
 js/config.js    ← business name, phone, email, service area, ABN, form endpoint
@@ -23,9 +24,8 @@ js/contact.js   Quote form logic
    - **Other host:** create a form endpoint (Formspree, Basin, etc. — file uploads need a plan that supports
      them) and paste the URL into `formEndpoint` in `config.js`.
    - If sending ever fails, the visitor is offered a pre-filled email to the business instead.
-3. **Adding a project** – save a ~700px and ~1400px wide JPG into `images/projects/`, then in `index.html`
-   copy the `<figure class="project">` block, update the image paths and caption. Remove `featured`
-   from the first one once there are several, so they sit in a grid.
+3. **Adding a project** – save a ~700px and ~1400px wide JPG into `images/projects/`, then in `projects.html`
+   copy the `<figure class="project">` block and update the image paths and caption.
 
 ## Preview tricks
 - Run locally: `python -m http.server 5510` then open http://localhost:5510

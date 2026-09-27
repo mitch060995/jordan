@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>McPherson Tiling | Past Projects</title>
+  <meta name="description" content="Photos of recent tiling jobs: bathrooms, pools, floors and outdoor crazy pave." />
+  <meta name="theme-color" content="#121212" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='2' y='2' width='13' height='13' rx='1' fill='%23efe9df'/%3E%3Crect x='17' y='2' width='13' height='13' rx='1' fill='%23efe9df'/%3E%3Crect x='2' y='17' width='13' height='13' rx='1' fill='%23efe9df'/%3E%3Crect x='17' y='17' width='13' height='13' rx='1' fill='%23c9713f'/%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,500..900&family=Inter:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+  <header class="nav">
+    <div class="wrap">
+      <a class="brand" href="index.html" aria-label="Home">
+        <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true"><rect x="2" y="2" width="13" height="13" rx="1" fill="#efe9df"/><rect x="17" y="2" width="13" height="13" rx="1" fill="#efe9df"/><rect x="2" y="17" width="13" height="13" rx="1" fill="#efe9df"/><rect x="17" y="17" width="13" height="13" rx="1" fill="#c9713f"/></svg>
+        <span class="brand-name" data-site="name">McPherson Tiling</span>
+      </a>
+      <button class="nav-toggle" aria-label="Menu" aria-expanded="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+      <nav class="nav-links">
+        <a href="index.html#services">Services</a>
+        <a href="projects.html" aria-current="page">Projects</a>
+        <a data-tel href="#"><span data-site="phone">0400 000 000</span></a>
+        <a class="btn" href="contact.html">Free quote</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="page-hero">
+      <canvas data-pattern="crazy" data-seed="12" aria-hidden="true"></canvas>
+      <div class="wrap">
+        <p class="eyebrow reveal">Past projects</p>
+        <h1 class="reveal" data-delay="1">Our <em class="serif">work</em></h1>
+        <p class="lead reveal" data-delay="2">A few recent jobs. Tap a photo to see it full size.</p>
+      </div>
+    </section>
+
+    <section class="wrap projects-page">
+      <!-- To add a project: copy a <figure class="project"> block and change the image + caption. -->
+      <div class="projects">
+        <figure class="project reveal">
+          <button class="project-img" type="button" data-full="images/projects/crazy-pave-1400.jpg" aria-label="View larger photo: Travertine crazy pave">
+            <img src="images/projects/crazy-pave-700.jpg"
+                 srcset="images/projects/crazy-pave-700.jpg 700w, images/projects/crazy-pave-1400.jpg 1400w"
+                 sizes="(min-width: 900px) 400px, 100vw"
+                 width="700" height="933" loading="lazy"
+                 alt="Travertine crazy pave courtyard and steps with light grout joints" />
+          </button>
+          <figcaption>
+            <span class="tag">Outdoor</span>
+            <h3>Travertine crazy pave</h3>
+            <p>An outdoor entertaining area and steps, hand-fitted in natural travertine.</p>
+          </figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="cta-band">
+      <canvas data-pattern="herringbone" data-seed="30" data-scale="1.4" aria-hidden="true"></canvas>
+      <div class="wrap reveal">
+        <h2>Want something <em class="serif">like this?</em></h2>
+        <p class="lead">Call, email or send us a few photos for a free quote.</p>
+        <div class="cta-row">
+          <a class="btn" href="contact.html">Get a free quote</a>
+          <a class="btn ghost" data-tel href="#">Call <span data-site="phone">0400 000 000</span></a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap foot-bottom">
+      <span>© <span data-year></span> <span data-site="name">McPherson Tiling</span></span>
+      <span><a data-mail href="#"><span data-site="email">hello@example.com.au</span></a></span>
+      <span data-abn></span>
+    </div>
+  </footer>
+
+  <dialog class="lightbox" aria-label="Project photo">
+    <button class="lightbox-close" type="button" aria-label="Close">×</button>
+    <img alt="" />
+  </dialog>
+
+  <script src="js/config.js"></script>
+  <script src="js/patterns.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

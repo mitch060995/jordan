@@ -374,8 +374,8 @@ section.block { padding: clamp(80px, 12vw, 150px) 0; position: relative; }
 .service li { font-size: 0.76rem; padding: 4px 10px; border: 1px solid var(--line); border-radius: 20px; color: var(--muted); }
 
 /* ---------- Projects ---------- */
-.projects-block { background: var(--ink-2); border-block: 1px solid var(--line); }
-.projects { display: grid; gap: 24px; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
+.projects-page { padding-bottom: clamp(70px, 10vw, 120px); }
+.projects { display: grid; gap: 24px; grid-template-columns: repeat(auto-fill, minmax(min(300px, 100%), 1fr)); }
 .project { margin: 0; }
 .project-img {
   display: block; width: 100%; padding: 0; border: 0; cursor: zoom-in;
@@ -388,12 +388,6 @@ section.block { padding: clamp(80px, 12vw, 150px) 0; position: relative; }
 .project h3 { margin: 8px 0 6px; }
 .project p { margin: 0; color: var(--bone-2); font-size: 0.97rem; }
 .tag { font-size: 0.72rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--clay-2); }
-@media (min-width: 900px) {
-  .project.featured { grid-column: 1 / -1; display: grid; grid-template-columns: 560px 1fr; gap: 48px; align-items: center; }
-  .project.featured figcaption { padding: 0; }
-  .project.featured h3 { font-size: 2.4rem; }
-  .project.featured p { font-size: 1.1rem; max-width: 40ch; }
-}
 .lightbox { padding: 0; border: 0; background: transparent; max-width: 94vw; max-height: 92vh; overflow: visible; }
 .lightbox::backdrop { background: rgba(10,10,10,.9); }
 .lightbox img { max-width: 94vw; max-height: 92vh; width: auto; height: auto; border-radius: var(--radius); }
