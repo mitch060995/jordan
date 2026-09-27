@@ -10,6 +10,7 @@ css/styles.css  All styles
 js/config.js    ← business name, phone, email, service area, ABN, form endpoint
 js/patterns.js  Canvas tile-pattern renderer (herringbone, subway, crazy pave, pool mosaic…)
 js/main.js      Nav, reveals, project photo viewer, hero scroll animation
+js/scenes.js    Hero tiling scenes (bathroom, crazy pave, pool, large format, hexagon) — one is picked at random each visit
 images/projects Past-project photos (a ~700px and ~1400px wide copy of each)
 js/contact.js   Quote form logic
 ```
@@ -30,3 +31,4 @@ js/contact.js   Quote form logic
 ## Preview tricks
 - Run locally: `python -m http.server 5510` then open http://localhost:5510
 - `index.html?p=0.5` freezes the hero animation at 50% (handy for screenshots).
+- `index.html?scene=pool` forces a particular hero scene (`bathroom`, `crazypave`, `pool`, `floor`, `hexagon`).

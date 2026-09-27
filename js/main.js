@@ -90,45 +90,44 @@
   const laserV = lay.querySelector(".laser.v");
   const steps = [...lay.querySelectorAll(".lay-steps li")];
 
-  const TONES = [
-    ["#ece6db", "#d9d0c1"], ["#e6dfd3", "#cfc5b4"], ["#f1ece4", "#ddd4c6"],
-    ["#e1d8ca", "#c9bda9"], ["#ebe4d8", "#d4c9b8"], ["#d8cdbc", "#c2b49e"],
-  ];
-  let tiles = [], cols = 0, rows = 0;
+  // A different tiling job each visit (bathroom, crazy pave, pool…) — see scenes.js
+  const sceneName = window.TileScenes.choose();
+  const seed = Math.floor(Math.random() * 1e9);
+  let tiles = [], layoutKey = "";
 
   function build() {
     const mobile = window.innerWidth <= 700;
-    const c = mobile ? 6 : 10, r = mobile ? 9 : 7;
-    if (c === cols && r === rows) return;
-    cols = c; rows = r;
+    const key = mobile ? "m" : "d";
+    if (key === layoutKey) return false;
+    layoutKey = key;
+    const rand = mulberry(seed);
+    const aspect = mobile ? 3 / 4 : 16 / 10;
+    const scene = window.TileScenes.build(sceneName, aspect, mobile, rand);
+    floor.dataset.scene = sceneName;
+    floor.style.setProperty("--grout-color", scene.grout);
     floor.innerHTML = "";
-    tiles = [];
-    const rand = mulberry(42);
-    for (let y = 0; y < rows; y++) {
-      for (let x = 0; x < cols; x++) {
-        const el = document.createElement("div");
-        el.className = "tile";
-        const t = TONES[Math.floor(rand() * TONES.length)];
-        el.style.setProperty("--t1", t[0]);
-        el.style.setProperty("--t2", t[1]);
-        el.style.setProperty("--vein-a", 100 + rand() * 60 + "deg");
-        el.style.setProperty("--vein-b", 10 + rand() * 50 + "deg");
-        floor.appendChild(el);
-        // Lay from the far corner outward, like a tiler working toward the door
-        const order = (x + (rows - 1 - y)) / (cols + rows - 2);
-        const side = x < cols / 2 ? -1 : 1;
-        tiles.push({
-          el,
-          start: 0.12 + order * 0.32 + rand() * 0.04,
-          dx: side * (150 + rand() * 450),
-          dy: -250 - rand() * 400,
-          dz: 120 + rand() * 280,
-          rx: (rand() - 0.5) * 160,
-          ry: (rand() - 0.5) * 160,
-          rz: (rand() - 0.5) * 220,
-        });
-      }
-    }
+    tiles = scene.tiles.map((t) => {
+      const el = document.createElement("div");
+      el.className = "tile";
+      el.style.cssText =
+        `left:${t.box.x}%;top:${t.box.y}%;width:${t.box.w}%;height:${t.box.h}%;background:${t.bg};` +
+        (t.clip ? `clip-path:${t.clip};-webkit-clip-path:${t.clip};` : "");
+      floor.appendChild(el);
+      // Lay from the far corner outward, like a tiler working toward the door
+      const order = (t.cx + (1 - t.cy)) / 2;
+      const side = t.cx < 0.5 ? -1 : 1;
+      return {
+        el,
+        start: 0.12 + order * 0.32 + rand() * 0.04,
+        dx: side * (150 + rand() * 450),
+        dy: -250 - rand() * 400,
+        dz: 120 + rand() * 280,
+        rx: (rand() - 0.5) * 160,
+        ry: (rand() - 0.5) * 160,
+        rz: (rand() - 0.5) * 220,
+      };
+    });
+    return true;
   }
 
   function mulberry(a) { return () => { a |= 0; a = (a + 0x6d2b79f5) | 0; let t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
@@ -210,5 +209,5 @@
   build();
   render();
   window.addEventListener("scroll", request, { passive: true });
-  window.addEventListener("resize", () => { const oc = cols; build(); if (cols !== oc) tiles.forEach((t) => (t.done = null)); lastP = -1; request(); });
+  window.addEventListener("resize", () => { build(); lastP = -1; request(); });
 })();
