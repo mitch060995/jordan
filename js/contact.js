@@ -106,7 +106,7 @@
     } catch (err) {
       const subject = encodeURIComponent("Quote request from " + (data.get("name") || "website"));
       const body = encodeURIComponent(
-        `Name: ${data.get("name")}\nPhone: ${data.get("phone")}\nSuburb: ${data.get("suburb")}\nJob: ${data.get("job")}\nArea: ${data.get("area")}\nTimeframe: ${data.get("timeframe")}\n\n${data.get("message")}\n\n(I'll attach photos to this email.)`
+        `Name: ${data.get("name")}\nPhone: ${data.get("phone")}\nSuburb: ${data.get("suburb")}\nJob: ${data.get("job")}\n\n${data.get("message")}\n\n(I'll attach photos to this email.)`
       );
       showStatus("bad",
         `Sorry, that didn't send. Please <a href="mailto:${S.email}?subject=${subject}&body=${body}">email us your request</a> ` +

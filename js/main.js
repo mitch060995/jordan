@@ -62,45 +62,19 @@
     }), 250);
   });
 
-  /* ---------- Pattern studio ---------- */
-  const studio = document.querySelector("[data-studio]");
-  if (studio && window.TilePatterns) {
-    const box = studio.querySelector(".studio-canvas");
-    const desc = studio.querySelector(".pattern-desc");
-    const tabs = [...studio.querySelectorAll("[data-p]")];
-    let current = box.querySelector("canvas");
-    const show = (btn, first) => {
-      tabs.forEach((b) => b.setAttribute("aria-selected", b === btn));
-      desc.innerHTML = `<strong>${btn.textContent}</strong>${btn.dataset.desc}`;
-      box.classList.toggle("pool", btn.dataset.p === "pool");
-      const next = document.createElement("canvas");
-      next.setAttribute("aria-hidden", "true");
-      next.className = first ? "" : "out";
-      box.appendChild(next);
-      TilePatterns.draw(next, btn.dataset.p, { seed: 21 + tabs.indexOf(btn) });
-      requestAnimationFrame(() => requestAnimationFrame(() => {
-        next.classList.remove("out");
-        if (current && current !== next) {
-          const old = current;
-          old.classList.add("out");
-          setTimeout(() => old.remove(), 600);
-        }
-        current = next;
-      }));
-    };
-    tabs.forEach((b) => b.addEventListener("click", () => { show(b); stopAuto(); }));
-    if (current) current.remove(), (current = null);
-    let started = false, auto;
-    const stopAuto = () => clearInterval(auto);
-    new IntersectionObserver((es, o) => {
-      if (es[0].isIntersecting && !started) {
-        started = true; o.disconnect(); show(tabs[0], true);
-        if (!reduced) auto = setInterval(() => {
-          const i = tabs.findIndex((b) => b.getAttribute("aria-selected") === "true");
-          show(tabs[(i + 1) % tabs.length]);
-        }, 4200);
-      }
-    }, { rootMargin: "200px" }).observe(box);
+  /* ---------- Project photo lightbox ---------- */
+  const box = document.querySelector(".lightbox");
+  if (box && box.showModal) {
+    const img = box.querySelector("img");
+    document.querySelectorAll("[data-full]").forEach((btn) =>
+      btn.addEventListener("click", () => {
+        img.src = btn.dataset.full;
+        img.alt = btn.querySelector("img").alt;
+        box.showModal();
+      })
+    );
+    box.querySelector(".lightbox-close").addEventListener("click", () => box.close());
+    box.addEventListener("click", (e) => { if (e.target === box) box.close(); });
   }
 
   /* =========================================================
