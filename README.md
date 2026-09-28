@@ -11,13 +11,14 @@ js/config.js    ← business name, phone, email, service area, ABN, form endpoin
 js/patterns.js  Canvas tile-pattern renderer (herringbone, subway, crazy pave, pool mosaic…)
 js/main.js      Nav, reveals, project photo viewer, hero scroll animation
 js/scenes.js    Hero tiling scenes (bathroom, crazy pave, pool, large format, hexagon) — one is picked at random each visit
+images/icons    Home-screen / browser icons (tile logo)
 images/projects Past-project photos (a ~700px and ~1400px wide copy of each)
 js/contact.js   Quote form logic
 ```
 
 ## Before going live
 1. **Business details** – edit `js/config.js`. The name also appears as fallback text in the HTML
-   `<title>` tags and markup, so do a find & replace of `McPherson Tiling` across the `.html` files too.
+   `<title>` tags and markup, so do a find & replace of `McPherson Tiling` across the `.html` files and `site.webmanifest` too.
 2. **Quote form**
    - **Netlify (easiest):** drag the folder into Netlify. Forms are detected automatically
      (`data-netlify="true"`), and photos arrive with each submission. In Netlify → Forms → Notifications,
